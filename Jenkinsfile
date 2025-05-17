@@ -39,8 +39,8 @@ pipeline {
                 withSonarQubeEnv('sonar-server') {
                     // some block
                 sh '''
-                    $SCANNER_HOME/bin/sonar-scanner -Dsonar projectName=Blogging-app -Dsonar projectKey=Bloggin-app \
-                    -Dsonar java.binaries=target
+                    $SCANNER_HOME/bin/sonar-scanner -Dsonar .projectName=Blogging-app -Dsonar .projectKey=Bloggin-app \
+                    -Dsonar .java.binaries=target
                 '''
                 }
             }
