@@ -12,6 +12,7 @@ pipeline {
         }
         stage('java') {
             steps {
+                echo "Started the pipeline"
                 echo 'java --version'
             }
         }
