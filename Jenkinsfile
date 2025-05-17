@@ -10,6 +10,11 @@ pipeline {
                 cleanWs()
             }
         }
+        stage('java') {
+            steps {
+                echo 'java --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/Ramlu/FullStack-Blogging-App.git'
