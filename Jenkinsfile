@@ -37,11 +37,12 @@ pipeline {
         stage('Sonar anaylysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    // some block
                 sh '''
-                    $SCANNER_HOME/bin/sonar-scanner -Dsonar .projectName=Blogging-app -Dsonar .projectKey=Bloggin-app \
-                    -Dsonar .java.binaries=target
-                '''
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectName="Blogging-app" \
+                    -Dsonar.projectKey="Blogging-app" \
+                    -Dsonar.java.binaries="target"
+            '''
                 }
             }
         }
