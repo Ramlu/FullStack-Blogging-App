@@ -10,12 +10,6 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('java') {
-            steps {
-                echo "Started the pipeline"
-                echo 'java --version'
-            }
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/Ramlu/FullStack-Blogging-App.git'
@@ -34,6 +28,11 @@ pipeline {
         stage('Package') {
             steps {
                 sh 'mvn package'
+            }
+        }
+        stage('Trivy Scan') {
+            steps {
+                sh 'trivy fs --format table -o fs.html .'
             }
         }
     }
