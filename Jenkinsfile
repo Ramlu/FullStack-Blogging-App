@@ -37,12 +37,14 @@ pipeline {
         stage('Sonar anaylysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
+                    script {
                 sh '''
                     $SCANNER_HOME/bin/sonar-scanner \
                     -Dsonar.projectName="Blogging-app" \
                     -Dsonar.projectKey="Blogging-app" \
                     -Dsonar.java.binaries="target"
             '''
+                    }
                 }
             }
         }
