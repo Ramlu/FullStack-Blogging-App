@@ -4,6 +4,10 @@ pipeline {
         jdk 'jdk17'
         maven 'maven3'
     }
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -25,14 +29,32 @@ pipeline {
                 sh 'mvn install'
             }
         }
+        stage('Trivy Scan') {
+            steps {
+                sh 'trivy fs --format table -o fs.html .'
+            }
+        }
+        stage('Sonar anaylysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    // some block
+                sh '''
+                    $SCANNER_HOME/bin/sonar-scanner -Dsonar projectName=Blogging-app -Dsonar projectKey=Bloggin-app \
+                    -Dsonar java.binaries=target
+                '''
+                }
+            }
+        }
         stage('Package') {
             steps {
                 sh 'mvn package'
             }
         }
-        stage('Trivy Scan') {
+        stage('Deploy') {
             steps {
-                sh 'trivy fs --format table -o fs.html .'
+                withMaven(globalMavenSettingsConfig: '33b45880-0672-4bc6-9e98-2ef2d276275f', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+                sh 'mvn deploy'
+                }
             }
         }
     }
